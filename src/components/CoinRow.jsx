@@ -5,12 +5,22 @@ export default function CoinRow({ coin }) {
   const isPositive = coin.price_change_percentage_24h >= 0;
 
   return (
-    <div className="grid grid-cols-6 px-6 py-4 items-center text-sm border-b hover:bg-gray-50" onClick={() => navigate(`/coin/${coin.id}`)}>
+    <div
+      className="grid grid-cols-6 px-6 py-4 items-center text-sm border-b hover:bg-gray-50"
+      onClick={() => navigate(`/coin/${coin.id}`)}
+    >
       <div className="flex items-center gap-3">
-        <img src={coin.image} className="w-7 h-7" />
+        <img
+          src={coin.image}
+          className="w-7 h-7 transition transform duration-300 hover:scale-105 hover:cursor-pointer"
+        />
         <div>
-          <p className="font-semibold">{coin.name}</p>
-          <p className="text-gray-500 text-xs">{coin.symbol.toUpperCase()}</p>
+          <p className="font-semibold transition transform duration-300 hover:scale-105 hover:cursor-pointer">
+            {coin.name}
+          </p>
+          <p className="text-gray-500 text-xs hover:cursor-pointer">
+            {coin.symbol.toUpperCase()}
+          </p>
         </div>
       </div>
 
@@ -31,11 +41,13 @@ export default function CoinRow({ coin }) {
       <p>{coin.total_volume.toLocaleString()}</p>
 
       <div className="text-right">
-        <button onClick={(e) => {
-          e.stopPropagation()
-          navigate(`/coin/${coin.id}`)
-        }}
-        className="px-4 py-1.5 rounded-full bg-gray-100 text-xs transition transform duration-200 hover:scale-105">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            navigate(`/coin/${coin.id}`);
+          }}
+          className="px-4 py-1.5 rounded-full bg-gray-100 text-xs transition transform duration-800 hover:scale-105 hover:bg-gray-700 hover:text-white hover:shadow-lg"
+        >
           View →
         </button>
       </div>
