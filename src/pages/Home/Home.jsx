@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { CoinContext } from "../../context/CoinContext";
 import MarketHeader from "../../components/MarketHeader";
 import MarketTable from "../../components/MarketTable";
+import Contact from "../../components/Contacts";
 
 export default function Home() {
   const { allCoin = [], loading } = useContext(CoinContext)
@@ -36,7 +37,7 @@ export default function Home() {
         <div className="flex gap-2 justify-center mt-5">
           <button
             onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-300"
+            className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-300 cursor-pointer"
             disabled={currentPage === 1}
           >
             Prev
@@ -60,13 +61,15 @@ export default function Home() {
             onClick={() =>
               setCurrentPage((prev) => Math.min(prev + 1, totalPages))
             }
-            className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-300"
+            className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-300 cursor-pointer"
             disabled={currentPage === totalPages}
           >
             Next
           </button>
         </div>
       )}
+
+      <Contact />
     </div>
   );
 }

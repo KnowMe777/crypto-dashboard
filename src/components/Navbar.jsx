@@ -1,6 +1,26 @@
 import logo from "../assets/logo.svg";
+import { Link } from 'react-router-dom'
+import { FaBell, FaArrowRight } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
-export default function Navbar() {
+export default function Navbar({ darkMode, setDarkMode }) {
+  const navigate = useNavigate()
+
+  const scrollToContact = () => {
+    if (window.location.pathname !== "/") {
+      navigate("/", { replace: false });
+      setTimeout(() => {
+        document
+          .getElementById("contact")
+          ?.scrollIntoView({ behavior: "smooth" });
+      }, 100); 
+    } else {
+      document
+        .getElementById("contact")
+        ?.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <nav className="w-full bg-white text-black px-5 py-4 flex items-center justify-between shadow-md">
       <div className="flex items-center gap-2">
@@ -9,27 +29,38 @@ export default function Navbar() {
           alt="CryptoFlow Logo"
           className="h-10 w-10 cursor-pointer"
         />
-        <p className="text-xl font-bold cursor-pointer">Vantage</p>
+        <Link to="/" className="text-xl font-bold cursor-pointer">
+          Vantage
+        </Link>
       </div>
 
       <div className="hidden md:flex gap-5">
-        <button className="transition duration-200 transform hover:-translate-y-0.5">
+        <Link
+          to="/"
+          className="transition duration-200 transform hover:-translate-y-0.5"
+        >
           Home
-        </button>
-        <button className="transition duration-200 transform hover:-translate-y-0.5">
+        </Link>
+        <Link
+          to="/portfolio"
+          className="transition duration-200 transform hover:-translate-y-0.5"
+        >
           Portfolio
-        </button>
-        <button className="transition duration-200 transform hover:-translate-y-1">
+        </Link>
+        <button
+          className="transition duration-200 transform hover:-translate-y-1"
+          onClick={scrollToContact}
+        >
           Contact
         </button>
       </div>
 
       <div className="flex gap-2">
         <button className="p-3 rounded transition duration-200 hover:-translate-y-0.5">
-          <i className="fa-solid fa-bell"></i>
+          <FaBell />
         </button>
         <button className="p-3 rounded transition duration-200 hover:-translate-y-0.5">
-          <i className="fa-solid fa-right-to-bracket"></i>
+          <FaArrowRight />
         </button>
       </div>
 
@@ -41,3 +72,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

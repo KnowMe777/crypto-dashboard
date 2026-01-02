@@ -1,8 +1,22 @@
 import { useNavigate } from 'react-router-dom'
+import { addToPortfolio } from '../utils/portfolioUtils';
+import toast from 'react-hot-toast';
 
 export default function CoinRow({ coin }) {
   const navigate = useNavigate()
   const isPositive = coin.price_change_percentage_24h >= 0;
+
+  const handleAdd = (e) => {
+    e.stopPropagation()
+
+    const added = addToPortfolio(coin)
+
+    if(added) {
+      toast.success(`${coin.name} added to Portfolio`);
+    } else {
+      toast.error("Already in Portfolio")
+    }
+  }
 
   return (
     <div
@@ -40,7 +54,7 @@ export default function CoinRow({ coin }) {
 
       <p>{coin.total_volume.toLocaleString()}</p>
 
-      <div className="text-right">
+      <div className="text-right flex gap-1">
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -48,7 +62,14 @@ export default function CoinRow({ coin }) {
           }}
           className="px-4 py-1.5 rounded-full bg-gray-100 text-xs transition transform duration-800 hover:scale-105 hover:bg-gray-700 hover:text-white hover:shadow-lg"
         >
-          View →
+          View
+        </button>
+
+        <button
+          onClick={handleAdd}
+          className="px-4 py-1.5 rounded-full bg-gray-100 text-xs transition transform duration-800 hover:scale-105 hover:bg-gray-700 hover:text-white hover:shadow-lg"
+        >
+          Add
         </button>
       </div>
     </div>

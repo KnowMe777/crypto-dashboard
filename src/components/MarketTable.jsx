@@ -5,14 +5,14 @@ export default function MarketTable({ coins }) {
     return <p className="p-7 text-center">No coins found.</p>;
 
   return (
-    <div className="bg-white border rounded-lg mt-7">
+    <div className="bg-white border rounded-2xl mt-2">
       <div className="grid grid-cols-6 px-6 py-3 text-sm text-gray-500 border-b">
         <span>Asset</span>
         <span>Price</span>
         <span>Change</span>
         <span>24h Range</span>
         <span>Volume</span>
-        <span className="text-right">Action</span>
+        <span className="text-center">Action</span>
       </div>
 
       {coins.map((coin) => (
