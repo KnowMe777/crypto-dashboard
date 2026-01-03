@@ -1,13 +1,12 @@
-import logo from "../../public/vantage.svg";
-import {
-  FaLinkedin,
-  FaEnvelope,
-  FaGithub,
-} from "react-icons/fa";
+import logo from "../../public/vantage.svg"
+import { FaLinkedin, FaEnvelope, FaGithub } from "react-icons/fa"
 
 export default function Contact() {
   return (
-    <section id="contact" className="bg-black text-white py-16 px-8 mt-10 rounded-xl w-full">
+    <section
+      id="contact"
+      className="bg-black text-white py-16 px-8 mt-10 rounded-xl w-full"
+    >
       <div className="flex flex-col md:flex-row items-center justify-center gap-12 md:gap-24">
         <div className="flex flex-col items-center justify-center">
           <img
@@ -63,5 +62,5 @@ export default function Contact() {
         </div>
       </div>
     </section>
-  );
+  )
 }

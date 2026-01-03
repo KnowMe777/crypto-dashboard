@@ -1,8 +1,8 @@
-import { useContext, useEffect, useState } from "react";
-import { CoinContext } from "../../context/CoinContext";
-import MarketHeader from "../../components/MarketHeader";
-import MarketTable from "../../components/MarketTable";
-import Contact from "../../components/Contacts";
+import { useContext, useEffect, useState } from "react"
+import { CoinContext } from "../../context/CoinContext"
+import MarketHeader from "../../components/MarketHeader"
+import MarketTable from "../../components/MarketTable"
+import Contact from "../../components/Contacts"
 
 export default function Home() {
   const { allCoin = [], loading } = useContext(CoinContext)
@@ -21,10 +21,17 @@ export default function Home() {
     setCurrentPage(1)
   }, [allCoin, search])
 
-  const indexOfLastCoin = currentPage * coinsPerPage;
-  const indexOfFirstCoin = indexOfLastCoin - coinsPerPage;
+  const indexOfLastCoin = currentPage * coinsPerPage
+  const indexOfFirstCoin = indexOfLastCoin - coinsPerPage
   const currentCoins = filteredCoins.slice(indexOfFirstCoin, indexOfLastCoin)
   const totalPages = Math.ceil(filteredCoins.length / coinsPerPage)
+
+  useEffect(() => {
+    window.scrollTo({
+      top: "0",
+      behavior: "smooth"
+    })
+  }, [currentPage])
 
   if (loading) return <p className="p-7">Loading coins...</p>
 
@@ -34,42 +41,67 @@ export default function Home() {
       <MarketTable coins={currentCoins} />
 
       {totalPages > 1 && (
-        <div className="flex gap-2 justify-center mt-5">
-          <button
-            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-            className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-300 cursor-pointer"
-            disabled={currentPage === 1}
+        <div className="mt-6 w-full flex justify-center">
+          <div
+            className="
+        w-full max-w-7xl
+        px-3 sm:px-6
+        flex flex-wrap items-center justify-center gap-2
+      "
           >
-            Prev
-          </button>
-
-          {[...Array(totalPages)].map((_, i) => (
             <button
-              key={i}
-              onClick={() => setCurrentPage(i + 1)}
-              className={`px-3 py-1 rounded ${
-                currentPage === i + 1
-                  ? "bg-gray-900 text-white"
-                  : "bg-gray-100 hover:bg-gray-300"
-              }`}
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="
+          px-4 py-2 rounded-full
+          bg-white border shadow-sm
+          text-sm font-medium
+          disabled:opacity-40 disabled:cursor-not-allowed
+          hover:bg-gray-100
+        "
             >
-              {i + 1}
+              Prev
             </button>
-          ))}
 
-          <button
-            onClick={() =>
-              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            {[...Array(totalPages)].map((_, i) => (
+              <button
+                key={i}
+                onClick={() => setCurrentPage(i + 1)}
+                className={`
+            px-4 py-2 rounded-full
+            text-sm font-medium
+            border shadow-sm
+            ${
+              currentPage === i + 1
+                ? "bg-gray-900 text-white"
+                : "bg-white hover:bg-gray-100"
             }
-            className="px-3 py-1 rounded bg-gray-100 hover:bg-gray-300 cursor-pointer"
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
+          `}
+              >
+                {i + 1}
+              </button>
+            ))}
+
+            <button
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+              disabled={currentPage === totalPages}
+              className="
+          px-4 py-2 rounded-full
+          bg-white border shadow-sm
+          text-sm font-medium
+          disabled:opacity-40 disabled:cursor-not-allowed
+          hover:bg-gray-100
+        "
+            >
+              Next
+            </button>
+          </div>
         </div>
       )}
 
       <Contact />
     </div>
-  );
+  )
 }

@@ -1,6 +1,6 @@
-import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Line } from "react-chartjs-2";
+import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { Line } from "react-chartjs-2"
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -9,7 +9,7 @@ import {
   LineElement,
   Tooltip,
   Filler,
-} from "chart.js";
+} from "chart.js"
 
 ChartJS.register(
   CategoryScale,
@@ -18,31 +18,31 @@ ChartJS.register(
   LineElement,
   Tooltip,
   Filler
-);
+)
 
 export default function Coin() {
-  const { id } = useParams();
-  const [coinData, setCoinData] = useState(null);
-  const [chartData, setChartData] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { id } = useParams()
+  const [coinData, setCoinData] = useState(null)
+  const [chartData, setChartData] = useState(null)
+  const [loading, setLoading] = useState(true)
 
-  const [chartColor, setChartColor] = useState("#228B22");
+  const [chartColor, setChartColor] = useState("#228B22")
 
-  const [days, setDays] = useState(30);
+  const [days, setDays] = useState(30)
 
   const timeRanges = [
     { label: "1D", value: 1 },
     { label: "7D", value: 7 },
     { label: "30D", value: 30 },
     { label: "90D", value: 90 },
-  ];
+  ]
 
   const currencyFormatter = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
-  });
+  })
 
   useEffect(() => {
     const fetchCoin = async () => {
@@ -50,44 +50,44 @@ export default function Coin() {
         if (!coinData) {
           const res = await fetch(
             `https://api.coingecko.com/api/v3/coins/${id}`
-          );
-          const data = await res.json();
-          setCoinData(data);
+          )
+          const data = await res.json()
+          setCoinData(data)
         }
 
-        const intervalParam = days > 1 ? "&interval=daily" : "";
+        const intervalParam = days > 1 ? "&interval=daily" : ""
 
         const chartRes = await fetch(
           `https://api.coingecko.com/api/v3/coins/${id}/market_chart?vs_currency=usd&days=${days}${intervalParam}`
-        );
-        const chartResData = await chartRes.json();
+        )
+        const chartResData = await chartRes.json()
 
-        const prices = chartResData.prices;
-        const firstPrice = prices[0][1];
-        const lastPrice = prices[prices.length - 1][1];
+        const prices = chartResData.prices
+        const firstPrice = prices[0][1]
+        const lastPrice = prices[prices.length - 1][1]
 
-        const isTrendPositive = lastPrice >= firstPrice;
+        const isTrendPositive = lastPrice >= firstPrice
 
-        const borderColor = isTrendPositive ? "#228B22" : "#D22B2B"; 
+        const borderColor = isTrendPositive ? "#228B22" : "#D22B2B"
         const backgroundColor = isTrendPositive
-          ? "rgba(74, 222, 128, 0.1)" 
-          : "rgba(239, 68, 68, 0.1)";
+          ? "rgba(74, 222, 128, 0.1)"
+          : "rgba(239, 68, 68, 0.1)"
 
-        setChartColor(borderColor);
+        setChartColor(borderColor)
 
         const formattedChart = {
           labels: prices.map((p) => {
-            const date = new Date(p[0]);
+            const date = new Date(p[0])
             if (days === 1) {
               return date.toLocaleTimeString([], {
                 hour: "2-digit",
                 minute: "2-digit",
-              });
+              })
             }
             return new Intl.DateTimeFormat("en-US", {
               month: "short",
               day: "numeric",
-            }).format(date);
+            }).format(date)
           }),
           datasets: [
             {
@@ -102,18 +102,18 @@ export default function Coin() {
               borderWidth: 2,
             },
           ],
-        };
+        }
 
-        setChartData(formattedChart);
+        setChartData(formattedChart)
       } catch (err) {
-        console.log(err);
+        console.log(err)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchCoin();
-  }, [id, days, coinData]);
+    fetchCoin()
+  }, [id, days, coinData])
 
   const chartOptions = {
     responsive: true,
@@ -127,7 +127,7 @@ export default function Coin() {
       tooltip: {
         callbacks: {
           label: function (context) {
-            return currencyFormatter.format(context.parsed.y);
+            return currencyFormatter.format(context.parsed.y)
           },
         },
       },
@@ -156,28 +156,28 @@ export default function Coin() {
         },
       },
     },
-  };
+  }
 
   if (loading && !coinData)
-    return <p className="p-7 flex items-center justify-center">Loading...</p>;
+    return <p className="p-7 flex items-center justify-center">Loading...</p>
   if (!coinData)
     return (
       <p className="p-7 text-red-500 flex items-center justify-center">
         Coin Data Not Found
       </p>
-    );
+    )
 
   const shortDescription =
-    coinData.description?.en?.replace(/<\/?[^>]+(>|$)/g, "") || "";
+    coinData.description?.en?.replace(/<\/?[^>]+(>|$)/g, "") || ""
   const displayDescription =
     shortDescription.length > 400
       ? shortDescription.slice(0, 400) + "..."
-      : shortDescription;
+      : shortDescription
 
-  const is24hPositive = coinData.market_data.price_change_percentage_24h >= 0;
+  const is24hPositive = coinData.market_data.price_change_percentage_24h >= 0
 
   return (
-    <div className="p-7 space-y-6 max-w-4xl mx-auto">
+    <div className="p-4 md:p-7 space-y-6 max-w-4xl mx-auto">
       <div className="flex items-center gap-4">
         <img
           src={coinData.image?.small}
@@ -216,7 +216,7 @@ export default function Coin() {
         </div>
 
         {chartData ? (
-          <div className="h-[400px] w-full">
+          <div className="h-[300px] md:h[400px] w-full">
             <Line data={chartData} options={chartOptions} />
           </div>
         ) : (
@@ -259,5 +259,5 @@ export default function Coin() {
         </div>
       )}
     </div>
-  );
+  )
 }

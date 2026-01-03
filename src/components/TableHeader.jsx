@@ -8,5 +8,5 @@ export default function TableHeader() {
       <span>Volume</span>
       <span className="text-right">Action</span>
     </div>
-  );
+  )
 }
